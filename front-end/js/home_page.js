@@ -322,42 +322,49 @@ function loadNotifications(loan) {
         return;
     }
 
-    const otherPartyIs = loan.role === 'BORROWER' ? 'lend' : 'borrow';
+    const isBorrower = loan.role === 'BORROWER';
+    const actionVerb = isBorrower ? 'lending' : 'borrowing';
+    const icon = isBorrower ? '💰' : '🤝';
+    const typeClass = isBorrower ? 'lender' : 'borrower';
+    const badgeClass = isBorrower ? 'lender-badge' : 'borrower-badge';
 
-    const notifications = [
-        {
-            loanId: loan._id,
-            type: loan.role,
-            message: `${loan.ownerName} has created a loan with you, ${otherPartyIs}ing you ${loan.totalAmount} SAR. The loan is awaiting your approval.`, 
-            badgeClass: 'bg-warning'
-        }
-    ];
+    const notificationCard = document.createElement('div');
+    notificationCard.classList.add('notification-card');
 
-    notifications.forEach(notification => {
-        const notificationCard = document.createElement('div');
-        notificationCard.classList.add('card', 'my-2', "fade-in", "slide-in");
-
-        notificationCard.innerHTML = `
-            <div class="card-body-note d-flex justify-content-between">
-                <div class="d-flex flex-column justify-content-center">
-                    <span class="badge ${notification.badgeClass} mb-2" style="max-width: 80px; text-align: center;">${notification.type}</span>
-                    <p style="color: var(--text-color);">${notification.message}</p>
-                </div>
-                <div class="d-flex flex-column justify-content-between align-items-center">
-                    <button class="btn btn-success mb-2 rounded-pill w-100" style="background-color: #32CD32; color: white; border: none;">Accept</button>
-                    <button class="btn btn-danger rounded-pill w-100" style="background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; border: none;">Reject</button>
-                </div>
+    notificationCard.innerHTML = `
+        <div class="notification-header">
+            <div class="notification-icon ${typeClass}">
+                ${icon}
             </div>
-        `;
+            <div class="notification-content">
+                <span class="notification-badge ${badgeClass}">${loan.role}</span>
+                <div class="notification-title">New Loan Request</div>
+            </div>
+        </div>
+        <p class="notification-message">
+            <strong>${loan.ownerName}</strong> has created a loan with you, ${actionVerb} you <strong>${loan.totalAmount} SAR</strong>. 
+            This loan is awaiting your approval.
+        </p>
+        <div class="notification-amount">
+            💵 ${loan.totalAmount} SAR
+        </div>
+        <div class="notification-actions">
+            <button class="notification-btn notification-btn-accept">
+                ✓ Accept
+            </button>
+            <button class="notification-btn notification-btn-reject">
+                ✗ Reject
+            </button>
+        </div>
+    `;
 
-        const acceptButton = notificationCard.querySelector('.btn-success');
-        const rejectButton = notificationCard.querySelector('.btn-danger');
+    const acceptButton = notificationCard.querySelector('.notification-btn-accept');
+    const rejectButton = notificationCard.querySelector('.notification-btn-reject');
 
-        acceptButton.addEventListener('click', () => handleLoanAction(notification.loanId, 'ACTIVE', notificationCard, loan));
-        rejectButton.addEventListener('click', () => handleLoanAction(notification.loanId, 'REJECTED', notificationCard));
+    acceptButton.addEventListener('click', () => handleLoanAction(loan._id, 'ACTIVE', notificationCard, loan));
+    rejectButton.addEventListener('click', () => handleLoanAction(loan._id, 'REJECTED', notificationCard));
 
-        notificationList.appendChild(notificationCard);
-    });
+    notificationList.appendChild(notificationCard);
 }
 
 
@@ -377,7 +384,7 @@ async function handleLoanAction(loanId, status, notificationCard, loan = null) {
             const notificationList = document.getElementById('notification-list');
             if (notificationList.children.length === 0) {
                 if (notificationList) {
-                    notificationList.innerHTML = '<p class="text-center" style="color: var(--text-secondary-color); margin: 50px 0px;">No new notifications</p>';
+                    notificationList.innerHTML = '<div class="no-notifications"><i class="bi bi-bell-slash"></i><p>No new notifications</p></div>';
                 }
             }
             if (status === 'ACTIVE') {
@@ -479,7 +486,7 @@ async function getAllLoans() {
         if (!hasNotifications) {
             const notificationList = document.getElementById('notification-list');
             if (notificationList) {
-                notificationList.innerHTML = '<p class="text-center" style="color: var(--text-secondary-color); margin: 50px 0px;">No new notifications</p>';
+                notificationList.innerHTML = '<div class="no-notifications"><i class="bi bi-bell-slash"></i><p>No new notifications</p></div>';
             }
         }
 

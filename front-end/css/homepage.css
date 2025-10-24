@@ -259,6 +259,60 @@ body.dark-mode select.form-select::placeholder {
     background-color: var(--button-hover-background-color);
 }
 
+/* Dropdown Menu Styling */
+.dropdown-menu {
+    background-color: var(--card-background);
+    border: 1px solid var(--card-shadow);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px var(--card-shadow);
+    min-width: 200px;
+}
+
+.dropdown-item {
+    color: var(--text-color);
+    padding: 10px 15px;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.dropdown-item:focus,
+.dropdown-item:active {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+body.dark-mode .dropdown-menu {
+    background-color: var(--card-background);
+    border-color: #444;
+}
+
+body.dark-mode .dropdown-item {
+    color: var(--text-color);
+}
+
+body.dark-mode .dropdown-item:hover,
+body.dark-mode .dropdown-item:focus,
+body.dark-mode .dropdown-item:active {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.btn-secondary {
+    background-color: var(--card-background);
+    border: 1px solid var(--card-shadow);
+    color: var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--background-color);
+    border-color: var(--text-color);
+    color: var(--text-color);
+}
+
 /* Transaction List */
 .transaction {
     display: flex;
@@ -299,4 +353,173 @@ body.dark-mode select.form-select::placeholder {
 
 .transaction-amount.negative {
     color: var(--borrower-border);
+}
+
+/* Modern Notification Cards */
+.notification-card {
+    background: linear-gradient(135deg, var(--card-background) 0%, var(--background-color) 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideInNotification 0.5s ease-out;
+}
+
+.notification-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px var(--card-shadow);
+}
+
+@keyframes slideInNotification {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.notification-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.notification-icon.borrower {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.notification-icon.lender {
+    background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+    color: white;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.notification-badge.borrower-badge {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+}
+
+.notification-badge.lender-badge {
+    background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+    color: white;
+}
+
+.notification-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 6px;
+}
+
+.notification-message {
+    font-size: 14px;
+    color: var(--text-secondary-color);
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.notification-amount {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.notification-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.notification-btn-accept {
+    background: linear-gradient(135deg, #51cf66 0%, #37b24d 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(81, 207, 102, 0.3);
+}
+
+.notification-btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(81, 207, 102, 0.4);
+}
+
+.notification-btn-reject {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.notification-btn-reject:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+}
+
+.no-notifications {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary-color);
+}
+
+.no-notifications i {
+    font-size: 64px;
+    opacity: 0.5;
+    margin-bottom: 20px;
+}
+
+.no-notifications p {
+    font-size: 18px;
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .notification-actions {
+        flex-direction: column;
+    }
+    
+    .notification-btn {
+        width: 100%;
+    }
 }
